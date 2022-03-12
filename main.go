@@ -6,10 +6,12 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 // Model for course - file
@@ -37,7 +39,9 @@ func (c *Course) IsEmpty() bool {
 }
 
 func main() {
-	fmt.Println("Golang API is running on port: 3000")
+	godotenv.Load()
+	port := os.Getenv("PORT")
+	fmt.Println("Golang API is running on port: ", port)
 
 	r := mux.NewRouter()
 
@@ -70,7 +74,7 @@ func main() {
 	r.HandleFunc("/course/{id}", deleteOneCourse).Methods("DELETE")
 
 	//listen server
-	log.Fatal(http.ListenAndServe(":3000", r))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 
 }
 
